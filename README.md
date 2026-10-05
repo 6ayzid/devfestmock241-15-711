@@ -5,7 +5,7 @@
 - **Participant Full Name**: Bayzid
 - **Registration Number**: 241-15-711
 - **Institution**: Daffodil International University (DIU)
-- **Repository URL**: [https://github.com/6ayzid/devfest-241-15-711](https://github.com/6ayzid/devfest-241-15-711)
+- **Repository URL**: [https://github.com/6ayzid/devfestmock241-15-711](https://github.com/6ayzid/devfestmock241-15-711)
 - **Public HTTPS Live URL (Vercel)**: [https://devfest-241-15-711.vercel.app](https://devfest-241-15-711.vercel.app)
 
 ---
@@ -19,8 +19,8 @@
 ### Quick Start
 ```bash
 # 1. Clone repository
-git clone https://github.com/6ayzid/devfest-241-15-711.git
-cd devfest-241-15-711
+git clone https://github.com/6ayzid/devfestmock241-15-711.git
+cd devfestmock241-15-711
 
 # 2. Install dependencies
 npm install
