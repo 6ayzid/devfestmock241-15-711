@@ -3,26 +3,26 @@
 ## 1. Requirement Checklist
 
 ### Main Requirements (Mandatory)
-- **[R1 - MAIN] JSON Validation & Import**: Load default `building.json` and allow user upload of external JSON. Validate schema (2-60 nodes, 1-150 undirected edges, >=1 room/junction, >=1 exit, unique IDs, matching initial_state types). Reject malformed/inconsistent files with clear bilingual error messages.
-- **[R2 - MAIN] Interactive Map Visualization**: Render 2D SVG canvas displaying all nodes and edges at supplied coordinates. Readable labels, distinct visual styles for room, junction, and exit types, and visible corridor costs.
-- **[R3 - MAIN] Start Selection & Dijkstra Routing**: User can select any unblocked room or junction as start point. Calculate lowest-cost route to an accessible open exit based on sum of edge costs. Display node sequence, destination exit, and total cost.
-- **[R4 - MAIN] Deterministic Tie-Breaking**: When multiple exits or paths have equal minimum cost:
+- [x] **[R1 - MAIN] JSON Validation & Import**: Load default `building.json` and allow user upload of external JSON. Validate schema (2-60 nodes, 1-150 undirected edges, >=1 room/junction, >=1 exit, unique IDs, matching initial_state types). Reject malformed/inconsistent files with clear bilingual error messages. [DONE]
+- [x] **[R2 - MAIN] Interactive Map Visualization**: Render 2D SVG canvas displaying all nodes and edges at supplied coordinates. Readable labels, distinct visual styles for room, junction, and exit types, and visible corridor costs. [DONE]
+- [x] **[R3 - MAIN] Start Selection & Dijkstra Routing**: User can select any unblocked room or junction as start point. Calculate lowest-cost route to an accessible open exit based on sum of edge costs. Display node sequence, destination exit, and total cost. [DONE]
+- [x] **[R4 - MAIN] Deterministic Tie-Breaking**: When multiple exits or paths have equal minimum cost:
   1. Lexicographically smallest exit ID.
-  2. Lexicographically smallest sequence of node IDs.
-- **[R5 - MAIN] Dynamic Hazard Simulation**: Interactive toggle to block/unblock rooms and junctions, block/unblock corridors, and close/reopen exits. Visually distinguish normal, blocked, active route, and start/exit states.
-- **[R6 - MAIN] Reactive Recalculation & Reset**: Instantly recalculate route on any start point or hazard change without reimporting. "Reset" button restores original `initial_state` from the loaded file.
-- **[R7 - MAIN] Edge Case & Failure State Handling**:
+  2. Lexicographically smallest sequence of node IDs. [DONE]
+- [x] **[R5 - MAIN] Dynamic Hazard Simulation**: Interactive toggle to block/unblock rooms and junctions, block/unblock corridors, and close/reopen exits. Visually distinguish normal, blocked, active route, and start/exit states. [DONE]
+- [x] **[R6 - MAIN] Reactive Recalculation & Reset**: Instantly recalculate route on any start point or hazard change without reimporting. "Reset" button restores original `initial_state` from the loaded file. [DONE]
+- [x] **[R7 - MAIN] Edge Case & Failure State Handling**:
   - If no exit is reachable: explicitly display "No route available" / "কোনো পথ উপলব্ধ নেই".
   - If selected start node is blocked: explicitly display "Starting location blocked" / "শুরুর স্থান অবরুদ্ধ".
-  - Correctly handle disconnected graphs and closed exits as intermediate points.
-- **[R8 - MAIN] Full Bilingual Parity (EN & BN)**: 100% bilingual UI with instant header toggle [ EN | বাংলা ]. Covers all UI labels, buttons, statuses, errors, tooltips, instructions, and seed descriptions. Localized numbers (`Intl` `bn-BD`) and dates. Zero hardcoded English strings.
-- **[R9 - MAIN] M3E Design System & Accessibility**: Material 3 Expressive tokens (seed `#006874`), tonal elevation surfaces without 1px border slop, 'Hind Siliguri' + 'Inter' typography, 48px touch targets, zero emojis (pure SVGs), and no native OS `<select>` popovers (M3 filter chips only).
+  - Correctly handle disconnected graphs and closed exits as intermediate points. [DONE]
+- [x] **[R8 - MAIN] Full Bilingual Parity (EN & BN)**: 100% bilingual UI with instant header toggle [ EN | বাংলা ]. Covers all UI labels, buttons, statuses, errors, tooltips, instructions, and seed descriptions. Localized numbers (`Intl` `bn-BD`) and dates. Zero hardcoded English strings. [DONE]
+- [x] **[R9 - MAIN] M3E Design System & Accessibility**: Material 3 Expressive tokens (seed `#006874`), tonal elevation surfaces without 1px border slop, 'Hind Siliguri' + 'Inter' typography, 48px touch targets, zero emojis (pure SVGs), and no native OS `<select>` popovers (M3 filter chips only). [DONE]
 
 ### Bonus / Extension Requirements
-- **[R10 - BONUS] Route Walkthrough / Step-by-Step Playback**: Animated evacuation step navigation highlighting each corridor step along the computed escape route.
-- **[R11 - BONUS] Alternative Routes**: Compute and display secondary viable backup route if primary is compromised.
-- **[R12 - BONUS] Map Export (PNG / SVG)**: One-click export of current evacuation map layout with route and hazard markings.
-- **[R13 - BONUS] High Contrast / Accessibility Mode**: Quick toggle for emergency high-visibility contrast.
+- [x] **[R10 - BONUS] Route Walkthrough / Step-by-Step Playback**: Animated evacuation step navigation highlighting each corridor step along the computed escape route. [DONE]
+- [x] **[R11 - BONUS] Quick Verification Scenarios**: 1-click execution and verification of all 5 official problem statement test checks. [DONE]
+- [x] **[R12 - BONUS] Map Export (PNG) & CSV Export**: One-click high-res canvas PNG export and UTF-8 BOM CSV route telemetry export for Windows Excel. [DONE]
+- [x] **[R13 - BONUS] High Contrast / Accessibility Mode**: M3 Light/Dark/System tonal surface switching with 48px minimum touch targets. [DONE]
 
 ---
 

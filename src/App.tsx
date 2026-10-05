@@ -40,6 +40,39 @@ export const App: React.FC = () => {
   const [activeStepIndex, setActiveStepIndex] = useState<number | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
+  // Check for scenario URL parameter on initial mount (for automated verification & screenshots)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    const scenario = params.get('scenario');
+    if (scenario === 'baseline') {
+      setStartNodeId('R1');
+      setBlockedNodesList([]);
+      setBlockedEdgesList([]);
+      setClosedExitsList([]);
+    } else if (scenario === 'blocked_c2') {
+      setStartNodeId('R1');
+      setBlockedNodesList(['C2']);
+      setBlockedEdgesList([]);
+      setClosedExitsList([]);
+    } else if (scenario === 'exits_closed') {
+      setStartNodeId('R1');
+      setBlockedNodesList([]);
+      setBlockedEdgesList([]);
+      setClosedExitsList(['E1', 'E2']);
+    } else if (scenario === 'start_r2') {
+      setStartNodeId('R2');
+      setBlockedNodesList([]);
+      setBlockedEdgesList([]);
+      setClosedExitsList([]);
+    } else if (scenario === 'blocked_start') {
+      setStartNodeId('R1');
+      setBlockedNodesList(['R1']);
+      setBlockedEdgesList([]);
+      setClosedExitsList([]);
+    }
+  }, [setStartNodeId, setBlockedNodesList, setBlockedEdgesList, setClosedExitsList]);
+
   // Convert state arrays to Sets for fast lookup
   const blockedNodes = useMemo(() => new Set(blockedNodesList), [blockedNodesList]);
   const blockedEdges = useMemo(() => new Set(blockedEdgesList), [blockedEdgesList]);
