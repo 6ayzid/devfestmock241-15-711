@@ -11,6 +11,7 @@ import { RouteSummary } from './components/RouteSummary';
 import { HazardControls } from './components/HazardControls';
 import { WalkthroughControls } from './components/WalkthroughControls';
 import { DatasetModal } from './components/DatasetModal';
+import { BottomDock } from './components/BottomDock';
 
 export const App: React.FC = () => {
   // 1. App State & Preferences (localStorage with app:v1: namespace)
@@ -288,7 +289,7 @@ export const App: React.FC = () => {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 w-full max-w-7xl mx-auto p-3 sm:p-5 lg:p-6 flex flex-col gap-4">
+      <main className="flex-1 w-full max-w-7xl mx-auto p-3 pb-24 sm:pb-5 sm:p-5 lg:p-6 flex flex-col gap-4">
         {/* Core Layout: Left = Interactive Map & Walkthrough, Right = Telemetry & Hazards */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
           {/* Interactive Map Column (Primary Focus) */}
@@ -346,6 +347,16 @@ export const App: React.FC = () => {
           </div>
         </div>
       </main>
+
+      {/* Mobile M3 Bottom Dock: Relieves congested top nav bar on small screens */}
+      <BottomDock
+        lang={lang}
+        onLanguageChange={setLang}
+        theme={theme}
+        onThemeChange={setTheme}
+        onExportCsv={handleExportCsv}
+        onExportPng={handleExportPng}
+      />
 
       {/* Custom Dataset Upload Modal */}
       <DatasetModal

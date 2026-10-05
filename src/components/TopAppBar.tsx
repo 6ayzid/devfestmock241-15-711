@@ -39,20 +39,20 @@ export const TopAppBar: React.FC<TopAppBarProps> = ({
   return (
     <header className="h-16 w-full bg-surface-container text-on-surface px-4 sm:px-6 flex items-center justify-between shadow-xs sticky top-0 z-30 transition-colors">
       {/* Brand & Building Title */}
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-2xl bg-primary text-on-primary flex items-center justify-center shadow-xs">
+      <div className="flex items-center gap-3 min-w-0">
+        <div className="w-10 h-10 shrink-0 rounded-2xl bg-primary text-on-primary flex items-center justify-center shadow-xs">
           <ShieldAlertIcon size={22} />
         </div>
-        <div>
+        <div className="min-w-0">
           <div className="flex items-center gap-2">
-            <h1 className="font-bold text-base sm:text-lg leading-tight tracking-tight">
+            <h1 className="font-bold text-base sm:text-lg leading-tight tracking-tight truncate">
               {t('appTitle', lang)}
             </h1>
             <span className="text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full bg-surface-container-highest text-on-surface-variant hidden md:inline-block">
               {t('diuBranding', lang)}
             </span>
           </div>
-          <p className="text-xs text-on-surface-variant truncate max-w-[200px] sm:max-w-xs">
+          <p className="text-xs text-on-surface-variant truncate max-w-[160px] sm:max-w-xs">
             {buildingName}
           </p>
         </div>
@@ -100,8 +100,8 @@ export const TopAppBar: React.FC<TopAppBarProps> = ({
           </button>
         </div>
 
-        {/* Theme Segmented Switcher */}
-        <div className="flex items-center bg-surface-container-high p-1 rounded-full">
+        {/* Theme Segmented Switcher (Relocated to bottom dock on congested small screens) */}
+        <div className="hidden sm:flex items-center bg-surface-container-high p-1 rounded-full">
           <button
             onClick={() => onThemeChange('light')}
             aria-label="Light theme"
@@ -137,8 +137,8 @@ export const TopAppBar: React.FC<TopAppBarProps> = ({
           </button>
         </div>
 
-        {/* Language Segmented Pill [ EN | বাংলা ] */}
-        <div className="flex items-center bg-surface-container-high p-1 rounded-full font-medium text-xs">
+        {/* Language Segmented Pill [ EN | বাংলা ] (Relocated to bottom dock on congested small screens) */}
+        <div className="hidden sm:flex items-center bg-surface-container-high p-1 rounded-full font-medium text-xs">
           <button
             onClick={() => onLanguageChange('en')}
             className={`px-2.5 py-1.5 rounded-full transition-colors cursor-pointer ${
