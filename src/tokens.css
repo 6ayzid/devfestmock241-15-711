@@ -1,0 +1,104 @@
+/* Material 3 Expressive Design System Tokens (Kole Jain Standards) */
+
+:root {
+  --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-hind: 'Hind Siliguri', 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Surface Elevation Tiers (Never 1px border slop) */
+  --surface: #fbfcfe;
+  --surface-container-low: #f5f6f8;
+  --surface-container: #eff1f2;
+  --surface-container-high: #e9ebec;
+  --surface-container-highest: #e3e5e7;
+
+  /* Primary Brand Tones (Seed #006874) */
+  --primary: #006874;
+  --on-primary: #ffffff;
+  --primary-container: #9beeff;
+  --on-primary-container: #001f24;
+
+  /* Secondary / Accent */
+  --secondary: #4a6267;
+  --on-secondary: #ffffff;
+  --secondary-container: #cde7ec;
+  --on-secondary-container: #051f23;
+
+  /* Tertiary / Exit Green */
+  --tertiary: #006c4c;
+  --on-tertiary: #ffffff;
+  --tertiary-container: #89f8c7;
+  --on-tertiary-container: #002114;
+
+  /* Error / Hazard Red */
+  --error: #ba1a1a;
+  --on-error: #ffffff;
+  --error-container: #ffdad6;
+  --on-error-container: #410002;
+
+  /* Text & Outline */
+  --on-surface: #191c1d;
+  --on-surface-variant: #3f484a;
+  --outline: #6f797a;
+  --outline-variant: #bfc8ca;
+}
+
+.dark {
+  /* Dark Surface Elevation Tiers */
+  --surface: #0e1415;
+  --surface-container-low: #161c1d;
+  --surface-container: #1b2021;
+  --surface-container-high: #252b2c;
+  --surface-container-highest: #303637;
+
+  /* Primary Dark */
+  --primary: #4fd8eb;
+  --on-primary: #00363d;
+  --primary-container: #004f58;
+  --on-primary-container: #9beeff;
+
+  /* Secondary Dark */
+  --secondary: #b1cbd0;
+  --on-secondary: #1c3438;
+  --secondary-container: #334b4f;
+  --on-secondary-container: #cde7ec;
+
+  /* Tertiary / Exit Green Dark */
+  --tertiary: #6cdbac;
+  --on-tertiary: #003825;
+  --tertiary-container: #005138;
+  --on-tertiary-container: #89f8c7;
+
+  /* Error Dark */
+  --error: #ffb4ab;
+  --on-error: #690005;
+  --error-container: #93000a;
+  --on-error-container: #ffdad6;
+
+  /* Text & Outline Dark */
+  --on-surface: #e1e3e4;
+  --on-surface-variant: #bfc8ca;
+  --outline: #899294;
+  --outline-variant: #3f484a;
+}
+
+/* Hind Siliguri Typography Guardrails (Zero clipping, proper line spacing) */
+[lang='bn'],
+.font-bengali {
+  font-family: var(--font-hind);
+  line-height: 1.75 !important;
+  letter-spacing: 0.015em;
+}
+
+/* Touch Target Minimum (48px) */
+.touch-target {
+  min-height: 48px;
+  min-width: 48px;
+}
+
+/* Tactile Spring Press Motion */
+.btn-tactile {
+  transition: transform 200ms cubic-bezier(0.2, 0, 0, 1), background-color 150ms ease;
+}
+.btn-tactile:active {
+  transform: scale(0.97);
+}
