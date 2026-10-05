@@ -122,8 +122,8 @@ export const BuildingMap: React.FC<BuildingMapProps> = ({
             <span className="w-5 h-1.5 rounded-full bg-primary inline-block" />
             <span>{t('activeRoute', lang)}</span>
           </div>
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-indicator-container text-on-indicator-container border border-indicator/30 font-bold">
-            <span className="w-2.5 h-2.5 rounded-full bg-indicator inline-block ring-2 ring-indicator-bright animate-pulse" />
+          <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-surface-container">
+            <span className="w-3 h-3 rounded-full bg-indicator inline-block" />
             <span>{t('activeStepIndicator', lang)}</span>
           </div>
         </div>
@@ -139,25 +139,13 @@ export const BuildingMap: React.FC<BuildingMapProps> = ({
           preserveAspectRatio="xMidYMid meet"
         >
           <defs>
-            {/* Glow filters for active path & indicator */}
             <filter id="routeGlow" x="-20%" y="-20%" width="140%" height="140%">
               <feGaussianBlur stdDeviation="3" result="blur" />
-              <feComposite in="SourceGraphic" in2="blur" operator="over" />
-            </filter>
-            <filter id="routeStreakGlow" x="-25%" y="-25%" width="150%" height="150%">
-              <feGaussianBlur stdDeviation="2.5" result="blur" />
-              <feComposite in="SourceGraphic" in2="blur" operator="over" />
-            </filter>
-            <filter id="indicatorGlow" x="-30%" y="-30%" width="160%" height="160%">
-              <feGaussianBlur stdDeviation="4.5" result="blur" />
               <feComposite in="SourceGraphic" in2="blur" operator="over" />
             </filter>
             <filter id="hazardGlow" x="-20%" y="-20%" width="140%" height="140%">
               <feGaussianBlur stdDeviation="3" result="blur" />
               <feComposite in="SourceGraphic" in2="blur" operator="over" />
-            </filter>
-            <filter id="markerShadow" x="-30%" y="-30%" width="160%" height="160%">
-              <feDropShadow dx="0" dy="2.5" stdDeviation="3" floodOpacity="0.4" />
             </filter>
           </defs>
 
@@ -185,10 +173,10 @@ export const BuildingMap: React.FC<BuildingMapProps> = ({
                 strokeDasharray = '6 4';
               } else if (isCurrentStep) {
                 strokeColor = 'var(--indicator)';
-                strokeWidth = 8;
+                strokeWidth = 5.5;
               } else if (isRouteEdge) {
                 strokeColor = 'var(--primary)';
-                strokeWidth = 5;
+                strokeWidth = 4.5;
               }
 
               return (
@@ -217,25 +205,9 @@ export const BuildingMap: React.FC<BuildingMapProps> = ({
                     strokeWidth={strokeWidth}
                     strokeDasharray={strokeDasharray}
                     strokeLinecap="round"
-                    filter={isCurrentStep ? 'url(#indicatorGlow)' : isRouteEdge ? 'url(#routeGlow)' : undefined}
                     className="cursor-pointer"
                     onClick={() => onToggleEdgeBlock(edge.id)}
                   />
-
-                  {/* High-contrast animated runner streak overlay for current active step */}
-                  {isCurrentStep && (
-                    <line
-                      x1={from.x}
-                      y1={from.y}
-                      x2={to.x}
-                      y2={to.y}
-                      stroke="var(--indicator-container)"
-                      strokeWidth={3.5}
-                      strokeDasharray="8 8"
-                      strokeLinecap="round"
-                      className="animate-escape-streak pointer-events-none"
-                    />
-                  )}
 
                   {/* Edge Cost Tag at Midpoint */}
                   <g
@@ -244,11 +216,11 @@ export const BuildingMap: React.FC<BuildingMapProps> = ({
                     onClick={() => onToggleEdgeBlock(edge.id)}
                   >
                     <rect
-                      x="-15"
-                      y="-11"
-                      width="30"
-                      height="22"
-                      rx="11"
+                      x="-14"
+                      y="-10"
+                      width="28"
+                      height="20"
+                      rx="10"
                       fill={
                         isBlocked
                           ? 'var(--error-container)'
@@ -262,20 +234,19 @@ export const BuildingMap: React.FC<BuildingMapProps> = ({
                         isBlocked
                           ? 'var(--error)'
                           : isCurrentStep
-                          ? 'var(--indicator-bright)'
+                          ? 'var(--indicator)'
                           : isRouteEdge
                           ? 'var(--primary)'
                           : 'var(--outline-variant)'
                       }
-                      strokeWidth={isCurrentStep ? 2 : 1.5}
-                      filter={isCurrentStep ? 'url(#markerShadow)' : undefined}
+                      strokeWidth={1.5}
                       className="transition-colors"
                     />
                     <text
                       x="0"
-                      y="4"
+                      y="3.5"
                       textAnchor="middle"
-                      fontSize="10.5"
+                      fontSize="10"
                       fontWeight="bold"
                       fill={
                         isBlocked
@@ -296,55 +267,18 @@ export const BuildingMap: React.FC<BuildingMapProps> = ({
             })}
           </g>
 
-          {/* 1.5 ESCAPE PATH ANIMATOR LAYER (Flowing Running Streaks) */}
+          {/* Escape Path Running Streak (Clean minimal dashed streak along route) */}
           {fullRouteD && (
-            <g id="escape-path-animator-layer" className="pointer-events-none">
-              {/* Outer soft corridor glow ribbon */}
-              <path
-                d={fullRouteD}
-                fill="none"
-                stroke="var(--primary)"
-                strokeWidth={9}
-                strokeOpacity={0.22}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                filter="url(#routeGlow)"
-              />
-              {/* Main solid route spine */}
-              <path
-                d={fullRouteD}
-                fill="none"
-                stroke="var(--primary)"
-                strokeWidth={4.5}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              {/* Animated running streak (continuous forward flowing dash stream) */}
-              <path
-                d={fullRouteD}
-                fill="none"
-                stroke="var(--primary-container)"
-                strokeWidth={3}
-                strokeDasharray="14 18"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="animate-escape-streak"
-                filter="url(#routeStreakGlow)"
-              />
-              {/* Running energy pulse wave traversing the entire escape path */}
-              <path
-                d={fullRouteD}
-                pathLength={100}
-                fill="none"
-                stroke="var(--indicator-bright)"
-                strokeWidth={4}
-                strokeDasharray="18 82"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="animate-escape-pulse"
-                filter="url(#routeStreakGlow)"
-              />
-            </g>
+            <path
+              d={fullRouteD}
+              fill="none"
+              stroke="var(--primary-container)"
+              strokeWidth={2.5}
+              strokeDasharray="8 8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="animate-escape-streak pointer-events-none"
+            />
           )}
 
           {/* 2. RENDER NODES */}
@@ -397,8 +331,6 @@ export const BuildingMap: React.FC<BuildingMapProps> = ({
                         fill={
                           isClosed
                             ? 'var(--error-container)'
-                            : isCurrentStepNode
-                            ? 'var(--indicator-container)'
                             : isRouteNode
                             ? 'var(--tertiary-container)'
                             : 'var(--surface-container-high)'
@@ -412,8 +344,7 @@ export const BuildingMap: React.FC<BuildingMapProps> = ({
                             ? 'var(--tertiary)'
                             : 'var(--outline-variant)'
                         }
-                        strokeWidth={isCurrentStepNode ? 4 : isRouteNode ? 3 : 1.5}
-                        filter={isCurrentStepNode ? 'url(#indicatorGlow)' : isRouteNode ? 'url(#routeGlow)' : undefined}
+                        strokeWidth={isCurrentStepNode ? 3.5 : isRouteNode ? 3 : 1.5}
                       />
 
                       {/* Exit Sign Text */}
@@ -426,8 +357,6 @@ export const BuildingMap: React.FC<BuildingMapProps> = ({
                         fill={
                           isClosed
                             ? 'var(--on-error-container)'
-                            : isCurrentStepNode
-                            ? 'var(--on-indicator-container)'
                             : isRouteNode
                             ? 'var(--on-tertiary-container)'
                             : 'var(--on-surface)'
@@ -445,8 +374,6 @@ export const BuildingMap: React.FC<BuildingMapProps> = ({
                         fill={
                           isClosed
                             ? 'var(--error)'
-                            : isCurrentStepNode
-                            ? 'var(--indicator)'
                             : isRouteNode
                             ? 'var(--tertiary)'
                             : 'var(--on-surface-variant)'
@@ -491,22 +418,6 @@ export const BuildingMap: React.FC<BuildingMapProps> = ({
                         />
                       )}
 
-                      {/* Ring for Current Step Node */}
-                      {isCurrentStepNode && (
-                        <rect
-                          x={-(size + 8) / 2}
-                          y={-(size + 8) / 2}
-                          width={size + 8}
-                          height={size + 8}
-                          rx={16}
-                          fill="none"
-                          stroke="var(--indicator)"
-                          strokeWidth={3}
-                          className="animate-active-step"
-                          filter="url(#indicatorGlow)"
-                        />
-                      )}
-
                       <rect
                         x={-size / 2}
                         y={-size / 2}
@@ -516,8 +427,6 @@ export const BuildingMap: React.FC<BuildingMapProps> = ({
                         fill={
                           isBlocked
                             ? 'var(--error-container)'
-                            : isCurrentStepNode
-                            ? 'var(--indicator-container)'
                             : isStart
                             ? 'var(--primary)'
                             : isRouteNode
@@ -536,7 +445,6 @@ export const BuildingMap: React.FC<BuildingMapProps> = ({
                             : 'var(--outline-variant)'
                         }
                         strokeWidth={isCurrentStepNode ? 3.5 : isStart || isRouteNode ? 2.5 : 1.5}
-                        filter={isCurrentStepNode ? 'url(#indicatorGlow)' : undefined}
                       />
 
                       <text
@@ -548,8 +456,6 @@ export const BuildingMap: React.FC<BuildingMapProps> = ({
                         fill={
                           isBlocked
                             ? 'var(--on-error-container)'
-                            : isCurrentStepNode
-                            ? 'var(--on-indicator-container)'
                             : isStart
                             ? 'var(--on-primary)'
                             : isRouteNode
@@ -569,8 +475,6 @@ export const BuildingMap: React.FC<BuildingMapProps> = ({
                         fill={
                           isBlocked
                             ? 'var(--error)'
-                            : isCurrentStepNode
-                            ? 'var(--indicator)'
                             : isStart
                             ? 'var(--on-primary)'
                             : isRouteNode
@@ -579,7 +483,7 @@ export const BuildingMap: React.FC<BuildingMapProps> = ({
                         }
                         fontFamily="var(--font-inter)"
                       >
-                        {isBlocked ? t('blockedState', lang) : isCurrentStepNode ? 'STEP' : isStart ? 'START' : t('room', lang)}
+                        {isBlocked ? t('blockedState', lang) : isStart ? 'START' : t('room', lang)}
                       </text>
                     </g>
                   </g>
@@ -610,24 +514,11 @@ export const BuildingMap: React.FC<BuildingMapProps> = ({
                     />
                   )}
 
-                  {isCurrentStepNode && (
-                    <circle
-                      r={radius + 5}
-                      fill="none"
-                      stroke="var(--indicator)"
-                      strokeWidth={3}
-                      className="animate-active-step"
-                      filter="url(#indicatorGlow)"
-                    />
-                  )}
-
                   <circle
                     r={radius}
                     fill={
                       isBlocked
                         ? 'var(--error-container)'
-                        : isCurrentStepNode
-                        ? 'var(--indicator-container)'
                         : isStart
                         ? 'var(--primary)'
                         : isRouteNode
@@ -646,7 +537,6 @@ export const BuildingMap: React.FC<BuildingMapProps> = ({
                         : 'var(--outline-variant)'
                     }
                     strokeWidth={isCurrentStepNode ? 3.5 : isStart || isRouteNode ? 2.5 : 1.5}
-                    filter={isCurrentStepNode ? 'url(#indicatorGlow)' : undefined}
                   />
 
                   <text
@@ -658,8 +548,6 @@ export const BuildingMap: React.FC<BuildingMapProps> = ({
                     fill={
                       isBlocked
                         ? 'var(--on-error-container)'
-                        : isCurrentStepNode
-                        ? 'var(--on-indicator-container)'
                         : isStart
                         ? 'var(--on-primary)'
                         : isRouteNode
@@ -679,8 +567,6 @@ export const BuildingMap: React.FC<BuildingMapProps> = ({
                     fill={
                       isBlocked
                         ? 'var(--error)'
-                        : isCurrentStepNode
-                        ? 'var(--indicator)'
                         : isStart
                         ? 'var(--on-primary)'
                         : isRouteNode
@@ -689,108 +575,13 @@ export const BuildingMap: React.FC<BuildingMapProps> = ({
                     }
                     fontFamily="var(--font-inter)"
                   >
-                    {isBlocked ? 'BLKD' : isCurrentStepNode ? 'STEP' : isStart ? 'START' : 'JUNC'}
+                    {isBlocked ? 'BLKD' : isStart ? 'START' : 'JUNC'}
                   </text>
                 </g>
               </g>
             );
             })}
           </g>
-
-          {/* 3. RUNNER / ACTIVE EVACUEE BEACON (Prominent High-Contrast Indicator) */}
-          {activeStepIndex !== null && routeResult.status === 'FOUND' && (
-            (() => {
-              const fromId = routeResult.path[activeStepIndex];
-              const toId = routeResult.path[activeStepIndex + 1];
-              const fromNode = fromId ? nodeMap.get(fromId) : null;
-              const toNode = toId ? nodeMap.get(toId) : null;
-              if (!fromNode) return null;
-
-              const angle = toNode
-                ? Math.atan2(toNode.y - fromNode.y, toNode.x - fromNode.x) * (180 / Math.PI)
-                : 0;
-
-              return (
-                <g
-                  id="active-runner-indicator"
-                  transform={`translate(${fromNode.x}, ${fromNode.y})`}
-                  className="pointer-events-none transition-transform duration-300 ease-out"
-                >
-                  {/* Outer expanding radar wave */}
-                  <circle
-                    r={26}
-                    fill="none"
-                    stroke="var(--indicator)"
-                    strokeWidth={2.5}
-                    className="animate-ping opacity-60"
-                  />
-
-                  {/* Pulsing beacon aura ring */}
-                  <circle
-                    r={20}
-                    fill="var(--indicator)"
-                    fillOpacity={0.2}
-                    stroke="var(--indicator)"
-                    strokeWidth={1.5}
-                  />
-
-                  {/* Center high-contrast beacon disc */}
-                  <circle
-                    r={13}
-                    fill="var(--indicator)"
-                    stroke="var(--on-indicator)"
-                    strokeWidth={2.5}
-                    filter="url(#markerShadow)"
-                  />
-
-                  {/* Directional arrow or destination checkmark */}
-                  {toNode ? (
-                    <g transform={`rotate(${angle})`}>
-                      <polygon
-                        points="-3,-4 5,0 -3,4"
-                        fill="var(--on-indicator)"
-                      />
-                    </g>
-                  ) : (
-                    <path
-                      d="M -4 0 L -1 3 L 4 -3"
-                      fill="none"
-                      stroke="var(--on-indicator)"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  )}
-
-                  {/* Floating Step Badge */}
-                  <g transform="translate(0, -24)">
-                    <rect
-                      x={-34}
-                      y={-10}
-                      width={68}
-                      height={20}
-                      rx={10}
-                      fill="var(--indicator)"
-                      stroke="var(--on-indicator)"
-                      strokeWidth={1.5}
-                      filter="url(#markerShadow)"
-                    />
-                    <text
-                      x={0}
-                      y={3.5}
-                      textAnchor="middle"
-                      fontSize="9"
-                      fontWeight="bold"
-                      fill="var(--on-indicator)"
-                      fontFamily="var(--font-inter)"
-                    >
-                      {`${t('stepNumber', lang)} ${formatNumber(activeStepIndex + 1, lang)}`}
-                    </text>
-                  </g>
-                </g>
-              );
-            })()
-          )}
         </svg>
       </div>
 

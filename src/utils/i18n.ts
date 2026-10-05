@@ -63,11 +63,7 @@ export const translations = {
     nextStep: 'Next',
     resetStep: 'Restart',
     currentStepDesc: 'Proceed from {from} to {to} (Corridor Cost: {cost})',
-    activeStepIndicator: 'Active Step / Runner',
-    speedNormal: '1x Speed',
-    speedFast: '2x Speed',
-    reachedExit: 'Safe Exit Reached',
-    runningStreakLegend: 'Animated Running Streak',
+    activeStepIndicator: 'Active Step',
 
     // File Upload & Validation
     datasetManager: 'Building Dataset',
@@ -148,11 +144,7 @@ export const translations = {
     nextStep: 'পরবর্তী',
     resetStep: 'পুনরায় শুরু',
     currentStepDesc: '{from} থেকে {to} এর দিকে এগিয়ে যান (করিডোর ব্যয়: {cost})',
-    activeStepIndicator: 'সক্রিয় ধাপ / অবস্থান',
-    speedNormal: '১x গতি',
-    speedFast: '২x গতি',
-    reachedExit: 'নিরাপদ বহির্গমনে পৌঁছেছেন',
-    runningStreakLegend: 'চলমান অ্যানিমেটেড পথ',
+    activeStepIndicator: 'সক্রিয় ধাপ',
 
     // File Upload & Validation
     datasetManager: 'বিল্ডিং ডাটাবেজ',

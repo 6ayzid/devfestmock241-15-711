@@ -118,9 +118,9 @@ export const RouteSummary: React.FC<RouteSummaryProps> = ({
             return (
               <React.Fragment key={`${nodeId}-${idx}`}>
                 <div
-                  className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
+                  className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold transition-colors ${
                     isCurrent
-                      ? 'bg-indicator text-on-indicator shadow-md ring-2 ring-indicator-bright scale-105'
+                      ? 'bg-indicator text-on-indicator'
                       : isFirst
                       ? 'bg-primary text-on-primary shadow-xs'
                       : isLast
