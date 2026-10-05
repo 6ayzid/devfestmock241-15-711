@@ -69,16 +69,6 @@ export const BuildingMap: React.FC<BuildingMapProps> = ({
   const routeNodeSet = useMemo(() => new Set(routeResult.path), [routeResult.path]);
   const routeEdgeSet = useMemo(() => new Set(routeResult.edgeIds), [routeResult.edgeIds]);
 
-  // Continuous SVG path string for the escape route (Start -> Exit)
-  const fullRouteD = useMemo(() => {
-    if (routeResult.status !== 'FOUND' || routeResult.path.length < 2) return '';
-    const points = routeResult.path
-      .map((nodeId) => nodeMap.get(nodeId))
-      .filter((n): n is NonNullable<typeof n> => !!n);
-    if (points.length < 2) return '';
-    return points.reduce((acc, pt, i) => `${acc} ${i === 0 ? 'M' : 'L'} ${pt.x} ${pt.y}`, '');
-  }, [routeResult.status, routeResult.path, nodeMap]);
-
   // Active step highlight
   const currentStepEdgeId =
     activeStepIndex !== null && activeStepIndex >= 0 && activeStepIndex < routeResult.edgeIds.length
@@ -258,20 +248,6 @@ export const BuildingMap: React.FC<BuildingMapProps> = ({
               );
             })}
           </g>
-
-          {/* Escape Path Running Streak (Clean minimal dashed streak along route) */}
-          {fullRouteD && (
-            <path
-              d={fullRouteD}
-              fill="none"
-              stroke="var(--primary-container)"
-              strokeWidth={2.5}
-              strokeDasharray="8 8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="animate-escape-streak pointer-events-none"
-            />
-          )}
 
           {/* 2. RENDER NODES */}
           <g id="nodes-layer">
