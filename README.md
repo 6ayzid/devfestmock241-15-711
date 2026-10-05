@@ -6,7 +6,7 @@
 - **Registration Number**: 241-15-711
 - **Institution**: Daffodil International University (DIU)
 - **Repository URL**: [https://github.com/6ayzid/devfestmock241-15-711](https://github.com/6ayzid/devfestmock241-15-711)
-- **Public HTTPS Live URL (Vercel)**: [https://devfest-241-15-711.vercel.app](https://devfest-241-15-711.vercel.app)
+- **Public HTTPS Live URL (Vercel)**: [https://devfestmock-241-15-711.vercel.app](https://devfestmock-241-15-711.vercel.app)
 
 ---
 
