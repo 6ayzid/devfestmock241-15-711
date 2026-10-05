@@ -8,12 +8,14 @@ interface RouteSummaryProps {
   routeResult: RouteResult;
   startNodeId: string;
   lang: Language;
+  activeStepIndex?: number | null;
 }
 
 export const RouteSummary: React.FC<RouteSummaryProps> = ({
   routeResult,
   startNodeId,
   lang,
+  activeStepIndex,
 }) => {
   // Case 1: Starting location blocked
   if (routeResult.status === 'START_BLOCKED') {
@@ -111,12 +113,15 @@ export const RouteSummary: React.FC<RouteSummaryProps> = ({
           {routeResult.path.map((nodeId, idx) => {
             const isLast = idx === routeResult.path.length - 1;
             const isFirst = idx === 0;
+            const isCurrent = activeStepIndex !== null && activeStepIndex !== undefined && activeStepIndex === idx;
 
             return (
               <React.Fragment key={`${nodeId}-${idx}`}>
                 <div
-                  className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold transition-transform ${
-                    isFirst
+                  className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
+                    isCurrent
+                      ? 'bg-indicator text-on-indicator shadow-md ring-2 ring-indicator-bright scale-105'
+                      : isFirst
                       ? 'bg-primary text-on-primary shadow-xs'
                       : isLast
                       ? 'bg-tertiary text-on-tertiary shadow-xs'
@@ -127,7 +132,11 @@ export const RouteSummary: React.FC<RouteSummaryProps> = ({
                   <span>{nodeId}</span>
                 </div>
                 {!isLast && (
-                  <span className="text-on-surface-variant text-xs font-bold px-0.5">
+                  <span
+                    className={`text-xs font-bold px-0.5 ${
+                      isCurrent ? 'text-indicator' : 'text-on-surface-variant'
+                    }`}
+                  >
                     →
                   </span>
                 )}

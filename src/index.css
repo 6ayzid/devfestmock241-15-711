@@ -28,6 +28,12 @@
   --color-error-container: var(--error-container);
   --color-on-error-container: var(--on-error-container);
 
+  --color-indicator: var(--indicator);
+  --color-indicator-bright: var(--indicator-bright);
+  --color-on-indicator: var(--on-indicator);
+  --color-indicator-container: var(--indicator-container);
+  --color-on-indicator-container: var(--on-indicator-container);
+
   --color-on-surface: var(--on-surface);
   --color-on-surface-variant: var(--on-surface-variant);
   --color-outline: var(--outline);
@@ -35,6 +41,23 @@
 
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-bn: 'Hind Siliguri', 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Escape Path & Walkthrough Animations */
+.animate-escape-streak {
+  animation: escapeStreakFlow 0.85s linear infinite;
+}
+
+.animate-escape-pulse {
+  animation: escapePulseWave 2.2s ease-in-out infinite;
+}
+
+.animate-active-step {
+  animation: activeStepPulse 1.2s ease-in-out infinite;
+}
+
+.animate-radar {
+  animation: beaconRadar 1.5s cubic-bezier(0, 0.2, 0.8, 1) infinite;
 }
 
 body {

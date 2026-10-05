@@ -108,10 +108,12 @@ export const App: React.FC = () => {
   }, [buildingData, startNodeId, blockedNodes, blockedEdges, closedExits]);
 
   // Reset walkthrough step if route changes
-  useEffect(() => {
+  const [prevPath, setPrevPath] = useState(routeResult.path);
+  if (prevPath !== routeResult.path) {
+    setPrevPath(routeResult.path);
     setActiveStepIndex(null);
     setIsPlaying(false);
-  }, [routeResult.path]);
+  }
 
   // 6. Hazard Handlers
   const handleToggleNodeBlock = useCallback(
@@ -292,6 +294,7 @@ export const App: React.FC = () => {
           routeResult={routeResult}
           startNodeId={startNodeId}
           lang={lang}
+          activeStepIndex={activeStepIndex}
         />
 
         {/* Step Walkthrough Controls (Bonus R10) */}

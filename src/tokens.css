@@ -35,6 +35,13 @@
   --error-container: #ffdad6;
   --on-error-container: #410002;
 
+  /* Active Indicator / Runner Beacon (High-contrast Safety Gold / Amber) */
+  --indicator: #b45309;
+  --indicator-bright: #d97706;
+  --on-indicator: #ffffff;
+  --indicator-container: #fef3c7;
+  --on-indicator-container: #78350f;
+
   /* Text & Outline */
   --on-surface: #191c1d;
   --on-surface-variant: #3f484a;
@@ -74,11 +81,67 @@
   --error-container: #93000a;
   --on-error-container: #ffdad6;
 
+  /* Active Indicator / Runner Beacon Dark */
+  --indicator: #fbbf24;
+  --indicator-bright: #fde047;
+  --on-indicator: #1c1917;
+  --indicator-container: #451a03;
+  --on-indicator-container: #fef3c7;
+
   /* Text & Outline Dark */
   --on-surface: #e1e3e4;
   --on-surface-variant: #bfc8ca;
   --outline: #899294;
   --outline-variant: #3f484a;
+}
+
+/* Escape Path Running Streak Animations */
+@keyframes escapeStreakFlow {
+  from {
+    stroke-dashoffset: 32;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes escapePulseWave {
+  0% {
+    stroke-dashoffset: 100;
+    opacity: 0.2;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0.2;
+  }
+}
+
+@keyframes activeStepPulse {
+  0%, 100% {
+    stroke-opacity: 1;
+  }
+  50% {
+    stroke-opacity: 0.55;
+  }
+}
+
+@keyframes beaconRadar {
+  0% {
+    r: 12;
+    opacity: 0.85;
+    stroke-width: 2.5;
+  }
+  100% {
+    r: 28;
+    opacity: 0;
+    stroke-width: 1;
+  }
 }
 
 /* Hind Siliguri Typography Guardrails (Zero clipping, proper line spacing) */
