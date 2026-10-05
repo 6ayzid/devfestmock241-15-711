@@ -275,70 +275,75 @@ export const BuildingMap: React.FC<BuildingMapProps> = ({
                   <g
                     key={node.id}
                     transform={`translate(${node.x}, ${node.y})`}
-                    className="cursor-pointer transition-transform duration-200 hover:scale-105 active:scale-95"
+                    className="cursor-pointer"
                     onClick={handleNodeClick}
                   >
-                    <title>{`${node.label} (${node.id}) - ${isClosed ? 'Closed' : 'Open'}. Click to toggle.`}</title>
-                    {/* Background Pill */}
-                    <rect
-                      x={-width / 2}
-                      y={-height / 2}
-                      width={width}
-                      height={height}
-                      rx={14}
-                      fill={
-                        isClosed
-                          ? 'var(--error-container)'
-                          : isRouteNode
-                          ? 'var(--tertiary-container)'
-                          : 'var(--surface-container-high)'
-                      }
-                      stroke={
-                        isClosed
-                          ? 'var(--error)'
-                          : isRouteNode
-                          ? 'var(--tertiary)'
-                          : 'var(--outline-variant)'
-                      }
-                      strokeWidth={isCurrentStepNode ? 4 : isRouteNode ? 3 : 1.5}
-                      filter={isRouteNode ? 'url(#routeGlow)' : undefined}
-                    />
+                    <g
+                      className="transition-transform duration-200 hover:scale-110 active:scale-95"
+                      style={{ transformBox: 'fill-box', transformOrigin: 'center' }}
+                    >
+                      <title>{`${node.label} (${node.id}) - ${isClosed ? 'Closed' : 'Open'}. Click to toggle.`}</title>
+                      {/* Background Pill */}
+                      <rect
+                        x={-width / 2}
+                        y={-height / 2}
+                        width={width}
+                        height={height}
+                        rx={14}
+                        fill={
+                          isClosed
+                            ? 'var(--error-container)'
+                            : isRouteNode
+                            ? 'var(--tertiary-container)'
+                            : 'var(--surface-container-high)'
+                        }
+                        stroke={
+                          isClosed
+                            ? 'var(--error)'
+                            : isRouteNode
+                            ? 'var(--tertiary)'
+                            : 'var(--outline-variant)'
+                        }
+                        strokeWidth={isCurrentStepNode ? 4 : isRouteNode ? 3 : 1.5}
+                        filter={isRouteNode ? 'url(#routeGlow)' : undefined}
+                      />
 
-                    {/* Exit Sign Text */}
-                    <text
-                      x="0"
-                      y="-3"
-                      textAnchor="middle"
-                      fontSize="11"
-                      fontWeight="bold"
-                      fill={
-                        isClosed
-                          ? 'var(--on-error-container)'
-                          : isRouteNode
-                          ? 'var(--on-tertiary-container)'
-                          : 'var(--on-surface)'
-                      }
-                      fontFamily="var(--font-inter)"
-                    >
-                      {node.id}
-                    </text>
-                    <text
-                      x="0"
-                      y="11"
-                      textAnchor="middle"
-                      fontSize="9"
-                      fontWeight="500"
-                      fill={
-                        isClosed
-                          ? 'var(--error)'
-                          : isRouteNode
-                          ? 'var(--tertiary)'
-                          : 'var(--on-surface-variant)'
-                      }
-                      fontFamily="var(--font-inter)"
-                    >
-                      {isClosed ? t('closedState', lang) : t('exit', lang)}
-                    </text>
+                      {/* Exit Sign Text */}
+                      <text
+                        x="0"
+                        y="-3"
+                        textAnchor="middle"
+                        fontSize="11"
+                        fontWeight="bold"
+                        fill={
+                          isClosed
+                            ? 'var(--on-error-container)'
+                            : isRouteNode
+                            ? 'var(--on-tertiary-container)'
+                            : 'var(--on-surface)'
+                        }
+                        fontFamily="var(--font-inter)"
+                      >
+                        {node.id}
+                      </text>
+                      <text
+                        x="0"
+                        y="11"
+                        textAnchor="middle"
+                        fontSize="9"
+                        fontWeight="500"
+                        fill={
+                          isClosed
+                            ? 'var(--error)'
+                            : isRouteNode
+                            ? 'var(--tertiary)'
+                            : 'var(--on-surface-variant)'
+                        }
+                        fontFamily="var(--font-inter)"
+                      >
+                        {isClosed ? t('closedState', lang) : t('exit', lang)}
+                      </text>
+                    </g>
                   </g>
                 );
               }
@@ -350,91 +355,96 @@ export const BuildingMap: React.FC<BuildingMapProps> = ({
                   <g
                     key={node.id}
                     transform={`translate(${node.x}, ${node.y})`}
-                    className="cursor-pointer transition-transform duration-200 hover:scale-105 active:scale-95"
+                    className="cursor-pointer"
                     onClick={handleNodeClick}
                   >
-                    <title>{`${node.label} (${node.id}) - ${isBlocked ? 'Blocked' : isStart ? 'Start' : 'Available'}. Click to select / Alt-click to block.`}</title>
-                    {/* Ring for Start Node */}
-                    {isStart && (
+                    <g
+                      className="transition-transform duration-200 hover:scale-110 active:scale-95"
+                      style={{ transformBox: 'fill-box', transformOrigin: 'center' }}
+                    >
+                      <title>{`${node.label} (${node.id}) - ${isBlocked ? 'Blocked' : isStart ? 'Start' : 'Available'}. Click to select / Alt-click to block.`}</title>
+                      {/* Ring for Start Node */}
+                      {isStart && (
+                        <rect
+                          x={-(size + 8) / 2}
+                          y={-(size + 8) / 2}
+                          width={size + 8}
+                          height={size + 8}
+                          rx={16}
+                          fill="none"
+                          stroke="var(--primary)"
+                          strokeWidth={2.5}
+                          strokeDasharray="4 2"
+                          className="animate-spin-slow"
+                        />
+                      )}
+
                       <rect
-                        x={-(size + 8) / 2}
-                        y={-(size + 8) / 2}
-                        width={size + 8}
-                        height={size + 8}
-                        rx={16}
-                        fill="none"
-                        stroke="var(--primary)"
-                        strokeWidth={2.5}
-                        strokeDasharray="4 2"
-                        className="animate-spin-slow"
+                        x={-size / 2}
+                        y={-size / 2}
+                        width={size}
+                        height={size}
+                        rx={12}
+                        fill={
+                          isBlocked
+                            ? 'var(--error-container)'
+                            : isStart
+                            ? 'var(--primary)'
+                            : isRouteNode
+                            ? 'var(--primary-container)'
+                            : 'var(--surface-container-high)'
+                        }
+                        stroke={
+                          isBlocked
+                            ? 'var(--error)'
+                            : isStart
+                            ? 'var(--primary)'
+                            : isRouteNode
+                            ? 'var(--primary)'
+                            : 'var(--outline-variant)'
+                        }
+                        strokeWidth={isCurrentStepNode ? 4 : isStart || isRouteNode ? 2.5 : 1.5}
                       />
-                    )}
 
-                    <rect
-                      x={-size / 2}
-                      y={-size / 2}
-                      width={size}
-                      height={size}
-                      rx={12}
-                      fill={
-                        isBlocked
-                          ? 'var(--error-container)'
-                          : isStart
-                          ? 'var(--primary)'
-                          : isRouteNode
-                          ? 'var(--primary-container)'
-                          : 'var(--surface-container-high)'
-                      }
-                      stroke={
-                        isBlocked
-                          ? 'var(--error)'
-                          : isStart
-                          ? 'var(--primary)'
-                          : isRouteNode
-                          ? 'var(--primary)'
-                          : 'var(--outline-variant)'
-                      }
-                      strokeWidth={isCurrentStepNode ? 4 : isStart || isRouteNode ? 2.5 : 1.5}
-                    />
-
-                    <text
-                      x="0"
-                      y="-4"
-                      textAnchor="middle"
-                      fontSize="11"
-                      fontWeight="bold"
-                      fill={
-                        isBlocked
-                          ? 'var(--on-error-container)'
-                          : isStart
-                          ? 'var(--on-primary)'
-                          : isRouteNode
-                          ? 'var(--on-primary-container)'
-                          : 'var(--on-surface)'
-                      }
-                      fontFamily="var(--font-inter)"
-                    >
-                      {node.id}
-                    </text>
-                    <text
-                      x="0"
-                      y="10"
-                      textAnchor="middle"
-                      fontSize="8"
-                      fontWeight="600"
-                      fill={
-                        isBlocked
-                          ? 'var(--error)'
-                          : isStart
-                          ? 'var(--on-primary)'
-                          : isRouteNode
-                          ? 'var(--primary)'
-                          : 'var(--on-surface-variant)'
-                      }
-                      fontFamily="var(--font-inter)"
-                    >
-                      {isBlocked ? t('blockedState', lang) : isStart ? 'START' : t('room', lang)}
-                    </text>
+                      <text
+                        x="0"
+                        y="-4"
+                        textAnchor="middle"
+                        fontSize="11"
+                        fontWeight="bold"
+                        fill={
+                          isBlocked
+                            ? 'var(--on-error-container)'
+                            : isStart
+                            ? 'var(--on-primary)'
+                            : isRouteNode
+                            ? 'var(--on-primary-container)'
+                            : 'var(--on-surface)'
+                        }
+                        fontFamily="var(--font-inter)"
+                      >
+                        {node.id}
+                      </text>
+                      <text
+                        x="0"
+                        y="10"
+                        textAnchor="middle"
+                        fontSize="8"
+                        fontWeight="600"
+                        fill={
+                          isBlocked
+                            ? 'var(--error)'
+                            : isStart
+                            ? 'var(--on-primary)'
+                            : isRouteNode
+                            ? 'var(--primary)'
+                            : 'var(--on-surface-variant)'
+                        }
+                        fontFamily="var(--font-inter)"
+                      >
+                        {isBlocked ? t('blockedState', lang) : isStart ? 'START' : t('room', lang)}
+                      </text>
+                    </g>
                   </g>
                 );
               }
@@ -445,10 +455,14 @@ export const BuildingMap: React.FC<BuildingMapProps> = ({
                 <g
                   key={node.id}
                   transform={`translate(${node.x}, ${node.y})`}
-                  className="cursor-pointer transition-transform duration-200 hover:scale-105 active:scale-95"
+                  className="cursor-pointer"
                   onClick={handleNodeClick}
                 >
-                  <title>{`${node.label} (${node.id}) - ${isBlocked ? 'Blocked' : isStart ? 'Start' : 'Available'}. Click to select / Alt-click to block.`}</title>
+                  <g
+                    className="transition-transform duration-200 hover:scale-110 active:scale-95"
+                    style={{ transformBox: 'fill-box', transformOrigin: 'center' }}
+                  >
+                    <title>{`${node.label} (${node.id}) - ${isBlocked ? 'Blocked' : isStart ? 'Start' : 'Available'}. Click to select / Alt-click to block.`}</title>
                   {isStart && (
                     <circle
                       r={radius + 5}
@@ -521,7 +535,8 @@ export const BuildingMap: React.FC<BuildingMapProps> = ({
                     {isBlocked ? 'BLKD' : isStart ? 'START' : 'JUNC'}
                   </text>
                 </g>
-              );
+              </g>
+            );
             })}
           </g>
         </svg>
