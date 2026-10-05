@@ -134,20 +134,12 @@ export const BuildingMap: React.FC<BuildingMapProps> = ({
         <svg
           ref={svgRef}
           id="evacuation-svg-map"
+          xmlns="http://www.w3.org/2000/svg"
           viewBox={viewBox}
           className="w-full h-full select-none"
           preserveAspectRatio="xMidYMid meet"
         >
-          <defs>
-            <filter id="routeGlow" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="3" result="blur" />
-              <feComposite in="SourceGraphic" in2="blur" operator="over" />
-            </filter>
-            <filter id="hazardGlow" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="3" result="blur" />
-              <feComposite in="SourceGraphic" in2="blur" operator="over" />
-            </filter>
-          </defs>
+          <defs />
 
           {/* 1. RENDER EDGES / CORRIDORS */}
           <g id="edges-layer">

@@ -120,13 +120,13 @@ export function validateBuildingData(data: unknown): ValidationResult {
     parsedEdges.push({ id, from, to, cost });
   }
 
-  // 4. initial_state
-  if (!obj.initial_state || typeof obj.initial_state !== 'object') {
-    return { valid: false, error: 'Field "initial_state" must be an object.' };
-  }
-  const init = obj.initial_state as Record<string, unknown>;
+  // 4. initial_state (supports standard object or defaults if omitted)
+  const init = (obj.initial_state && typeof obj.initial_state === 'object'
+    ? obj.initial_state
+    : {}) as Record<string, unknown>;
 
   const checkArray = (arr: unknown, name: string): string[] => {
+    if (arr === undefined || arr === null) return [];
     if (!Array.isArray(arr)) {
       throw new Error(`initial_state.${name} must be an array.`);
     }

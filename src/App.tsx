@@ -197,11 +197,20 @@ export const App: React.FC = () => {
   const handleLoadCustomData = useCallback(
     (data: BuildingData) => {
       setBuildingData(data);
-      const defaultStart = data.nodes.find((n) => n.type !== 'exit')?.id || 'R1';
+      const blockedNodes = data.initial_state?.blocked_nodes || [];
+      const unblockedStart = data.nodes.find(
+        (n) => n.type !== 'exit' && !blockedNodes.includes(n.id)
+      )?.id;
+      const defaultStart =
+        unblockedStart ||
+        data.nodes.find((n) => n.type !== 'exit')?.id ||
+        data.nodes[0]?.id ||
+        'R1';
+
       setStartNodeId(defaultStart);
-      setBlockedNodesList(data.initial_state.blocked_nodes || []);
-      setBlockedEdgesList(data.initial_state.blocked_edges || []);
-      setClosedExitsList(data.initial_state.closed_exits || []);
+      setBlockedNodesList(blockedNodes);
+      setBlockedEdgesList(data.initial_state?.blocked_edges || []);
+      setClosedExitsList(data.initial_state?.closed_exits || []);
       setActiveStepIndex(null);
       setIsPlaying(false);
     },
@@ -239,34 +248,144 @@ export const App: React.FC = () => {
 
   const handleExportPng = () => {
     const svg = document.getElementById('evacuation-svg-map') as SVGSVGElement | null;
-    if (!svg) return;
+    if (!svg) {
+      console.warn('SVG element #evacuation-svg-map not found for export');
+      return;
+    }
 
     try {
-      const svgData = new XMLSerializer().serializeToString(svg);
-      const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+      // 1. Deep clone SVG to avoid mutating active DOM
+      const clone = svg.cloneNode(true) as SVGSVGElement;
+
+      // 2. Ensure XML namespaces
+      clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+
+      // 3. Extract viewBox dimensions
+      const vb = svg.viewBox.baseVal;
+      const vbWidth = vb && vb.width > 0 ? vb.width : 800;
+      const vbHeight = vb && vb.height > 0 ? vb.height : 500;
+      clone.setAttribute('width', String(vbWidth));
+      clone.setAttribute('height', String(vbHeight));
+
+      // 4. Inject theme CSS variables directly into SVG defs so isolated image has colors
+      const isDark = document.documentElement.classList.contains('dark');
+      const defs =
+        clone.querySelector('defs') ||
+        clone.insertBefore(
+          document.createElementNS('http://www.w3.org/2000/svg', 'defs'),
+          clone.firstChild
+        );
+
+      const styleEl = document.createElementNS('http://www.w3.org/2000/svg', 'style');
+      styleEl.textContent = `
+        :root, svg {
+          --surface: ${isDark ? '#0e1415' : '#fbfcfe'};
+          --surface-container-low: ${isDark ? '#161c1d' : '#f5f6f8'};
+          --surface-container: ${isDark ? '#1b2021' : '#eff1f2'};
+          --surface-container-high: ${isDark ? '#252b2c' : '#e9ebec'};
+          --surface-container-highest: ${isDark ? '#303637' : '#e3e5e7'};
+          --primary: ${isDark ? '#4fd8eb' : '#006874'};
+          --on-primary: ${isDark ? '#00363d' : '#ffffff'};
+          --primary-container: ${isDark ? '#004f58' : '#9beeff'};
+          --on-primary-container: ${isDark ? '#9beeff' : '#001f24'};
+          --secondary: ${isDark ? '#b1cbd0' : '#4a6267'};
+          --on-secondary: ${isDark ? '#1c3438' : '#ffffff'};
+          --secondary-container: ${isDark ? '#334b4f' : '#cde7ec'};
+          --on-secondary-container: ${isDark ? '#cde7ec' : '#051f23'};
+          --tertiary: ${isDark ? '#6cdbac' : '#006c4c'};
+          --on-tertiary: ${isDark ? '#003825' : '#ffffff'};
+          --tertiary-container: ${isDark ? '#005138' : '#89f8c7'};
+          --on-tertiary-container: ${isDark ? '#89f8c7' : '#002114'};
+          --error: ${isDark ? '#ffb4ab' : '#ba1a1a'};
+          --on-error: ${isDark ? '#690005' : '#ffffff'};
+          --error-container: ${isDark ? '#93000a' : '#ffdad6'};
+          --on-error-container: ${isDark ? '#ffdad6' : '#410002'};
+          --indicator: ${isDark ? '#fbbf24' : '#b45309'};
+          --on-indicator: ${isDark ? '#1c1917' : '#ffffff'};
+          --on-surface: ${isDark ? '#e1e3e4' : '#191c1d'};
+          --on-surface-variant: ${isDark ? '#bfc8ca' : '#3f484a'};
+          --outline: ${isDark ? '#899294' : '#6f797a'};
+          --outline-variant: ${isDark ? '#3f484a' : '#bfc8ca'};
+          --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
+          --font-hind: 'Hind Siliguri', 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        text {
+          font-family: system-ui, -apple-system, sans-serif;
+        }
+      `;
+      defs.appendChild(styleEl);
+
+      // 5. Insert solid background rect into SVG clone
+      const bgRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      bgRect.setAttribute('x', String(vb ? vb.x : 0));
+      bgRect.setAttribute('y', String(vb ? vb.y : 0));
+      bgRect.setAttribute('width', String(vbWidth));
+      bgRect.setAttribute('height', String(vbHeight));
+      bgRect.setAttribute('fill', isDark ? '#0e1415' : '#fbfcfe');
+      clone.insertBefore(bgRect, clone.firstChild);
+
+      // 6. Serialize SVG to Blob
+      const svgString = new XMLSerializer().serializeToString(clone);
+      const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
       const blobURL = URL.createObjectURL(svgBlob);
       const image = new Image();
 
       image.onload = () => {
-        const canvas = document.createElement('canvas');
-        canvas.width = 1600;
-        canvas.height = 1000;
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
-          ctx.fillStyle = document.documentElement.classList.contains('dark')
-            ? '#0e1415'
-            : '#ffffff';
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-          ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+        try {
+          const scale = 2; // Crisp 2x retina export
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.round(vbWidth * scale);
+          canvas.height = Math.round(vbHeight * scale);
+          const ctx = canvas.getContext('2d');
 
-          const pngURL = canvas.toDataURL('image/png');
+          if (ctx) {
+            ctx.fillStyle = isDark ? '#0e1415' : '#fbfcfe';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+            canvas.toBlob((blob) => {
+              if (blob) {
+                const pngURL = URL.createObjectURL(blob);
+                const dl = document.createElement('a');
+                const safeName = buildingData.building.replace(/[^a-zA-Z0-9_\u0980-\u09FF-]+/g, '_');
+                dl.download = `smart-escape-map-${safeName}.png`;
+                dl.href = pngURL;
+                document.body.appendChild(dl);
+                dl.click();
+                document.body.removeChild(dl);
+                setTimeout(() => URL.revokeObjectURL(pngURL), 2000);
+              }
+              URL.revokeObjectURL(blobURL);
+            }, 'image/png');
+          } else {
+            URL.revokeObjectURL(blobURL);
+          }
+        } catch (canvasErr) {
+          console.error('Failed canvas rendering for PNG export, falling back to SVG:', canvasErr);
           const dl = document.createElement('a');
-          dl.download = `smart-escape-${buildingData.building.replace(/\s+/g, '_')}.png`;
-          dl.href = pngURL;
+          const safeName = buildingData.building.replace(/[^a-zA-Z0-9_\u0980-\u09FF-]+/g, '_');
+          dl.download = `smart-escape-map-${safeName}.svg`;
+          dl.href = blobURL;
+          document.body.appendChild(dl);
           dl.click();
+          document.body.removeChild(dl);
+          setTimeout(() => URL.revokeObjectURL(blobURL), 2000);
         }
-        URL.revokeObjectURL(blobURL);
       };
+
+      image.onerror = (err) => {
+        console.warn('Canvas rasterization blocked, falling back to SVG vector download:', err);
+        const dl = document.createElement('a');
+        const safeName = buildingData.building.replace(/[^a-zA-Z0-9_\u0980-\u09FF-]+/g, '_');
+        dl.download = `smart-escape-map-${safeName}.svg`;
+        dl.href = blobURL;
+        document.body.appendChild(dl);
+        dl.click();
+        document.body.removeChild(dl);
+        setTimeout(() => URL.revokeObjectURL(blobURL), 2000);
+      };
+
       image.src = blobURL;
     } catch (e) {
       console.error('Failed to export PNG:', e);

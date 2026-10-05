@@ -67,7 +67,14 @@ export const translations = {
 
     // File Upload & Validation
     datasetManager: 'Building Dataset',
+    uploadFileTab: 'Upload File',
+    pasteJsonTab: 'Paste JSON',
+    pasteJsonPlaceholder: 'Paste building.json content here...',
+    validateAndLoad: 'Validate & Load',
     dropJsonHere: 'Drag & drop a custom building.json file or click to select',
+    jsonFileHint: 'Supports .json schema (2-60 nodes, 1-150 edges)',
+    fileSizeExceeded: 'File size cannot exceed 2 MB',
+    close: 'Close',
     validationSuccess: 'Dataset loaded and validated successfully',
     validationFailed: 'Invalid building dataset format',
     nodesCount: 'Nodes',
@@ -148,7 +155,14 @@ export const translations = {
 
     // File Upload & Validation
     datasetManager: 'বিল্ডিং ডাটাবেজ',
+    uploadFileTab: 'ফাইল আপলোড',
+    pasteJsonTab: 'JSON পেস্ট',
+    pasteJsonPlaceholder: 'এখানে building.json কোড পেস্ট করুন...',
+    validateAndLoad: 'যাচাই ও লোড করুন',
     dropJsonHere: 'কাস্টম building.json ফাইল ড্রপ করুন বা ব্রাউজ করুন',
+    jsonFileHint: 'শুধুমাত্র বৈধ .json ফাইল সমর্থিত (২-৬০ নোড, ১-১৫০ এজ)',
+    fileSizeExceeded: 'ফাইলের আকার ২ মেগাবাইটের বেশি হতে পারবে না',
+    close: 'বন্ধ করুন',
     validationSuccess: 'ডাটাবেজ সফলভাবে যাচাই এবং লোড করা হয়েছে',
     validationFailed: 'বিল্ডিং ডাটাবেজের ফরম্যাট সঠিক নয়',
     nodesCount: 'মোট নোড',
