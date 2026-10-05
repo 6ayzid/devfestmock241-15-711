@@ -288,28 +288,10 @@ export const App: React.FC = () => {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 w-full max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 flex flex-col gap-6">
-        {/* Status / Telemetry Summary */}
-        <RouteSummary
-          routeResult={routeResult}
-          startNodeId={startNodeId}
-          lang={lang}
-          activeStepIndex={activeStepIndex}
-        />
-
-        {/* Step Walkthrough Controls (Bonus R10) */}
-        <WalkthroughControls
-          routeResult={routeResult}
-          activeStepIndex={activeStepIndex}
-          setActiveStepIndex={setActiveStepIndex}
-          isPlaying={isPlaying}
-          setIsPlaying={setIsPlaying}
-          lang={lang}
-        />
-
-        {/* Core Layout: SVG Map + Hazard Inspector */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          {/* Interactive Map Column */}
+      <main className="flex-1 w-full max-w-7xl mx-auto p-3 sm:p-5 lg:p-6 flex flex-col gap-4">
+        {/* Core Layout: Left = Interactive Map & Walkthrough, Right = Telemetry & Hazards */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+          {/* Interactive Map Column (Primary Focus) */}
           <div className="lg:col-span-7 xl:col-span-8 w-full flex flex-col gap-4">
             <BuildingMap
               buildingData={buildingData}
@@ -325,10 +307,29 @@ export const App: React.FC = () => {
               activeStepIndex={activeStepIndex}
               lang={lang}
             />
+
+            {/* Step Walkthrough Controls (Directly under map) */}
+            <WalkthroughControls
+              routeResult={routeResult}
+              activeStepIndex={activeStepIndex}
+              setActiveStepIndex={setActiveStepIndex}
+              isPlaying={isPlaying}
+              setIsPlaying={setIsPlaying}
+              lang={lang}
+            />
           </div>
 
-          {/* Hazard Control Panel Column */}
-          <div className="lg:col-span-5 xl:col-span-4 w-full">
+          {/* Telemetry Summary & Hazard Control Panel Column */}
+          <div className="lg:col-span-5 xl:col-span-4 w-full flex flex-col gap-4">
+            {/* Status / Telemetry Summary (At top of control column) */}
+            <RouteSummary
+              routeResult={routeResult}
+              startNodeId={startNodeId}
+              lang={lang}
+              activeStepIndex={activeStepIndex}
+            />
+
+            {/* Hazard Control Panel */}
             <HazardControls
               buildingData={buildingData}
               startNodeId={startNodeId}
